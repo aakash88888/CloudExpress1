@@ -1,4 +1,4 @@
-var socket = io("http://localhost:3000");
+var socket = io("https://cloud-express.vercel.app/");
 
 var firstEvent = null;
 var roomName = "SqFR5uoLEUX8Qzuo66xF686qxf23";
