@@ -1,4 +1,4 @@
-var socket = io("http://localhost:3000");
+var socket = io("https://backend-1wo2.onrender.com");
 
 var firstEvent = null;
 var roomName = "SqFR5uoLEUX8Qzuo66xF686qxf23";
