@@ -1,4 +1,4 @@
-var socket = io("https://cloud-express.vercel.app/");
+var socket = io("https://cloud-express-5o07m58sr-yashu-ranparias-projects.vercel.app/");
 
 var firstEvent = null;
 var roomName = "SqFR5uoLEUX8Qzuo66xF686qxf23";
