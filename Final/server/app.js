@@ -4,7 +4,7 @@ const { createServer } = require("http");
 const httpServer = createServer();
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://cloud-express-8tvj-oayoj6a1v-yashu-ranparias-projects.vercel.app",
+    origin: ['https://cloud-express-8tvj.vercel.app',"https://cloud-express-8tvj-oayoj6a1v-yashu-ranparias-projects.vercel.app"],
     methods: ["GET", "POST"]
   },
 });
