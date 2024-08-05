@@ -1,33 +1,15 @@
 {
-    "version": 2,
-    "name": "your-project-name",
-    "builds": [
-      {
-        "src": "recorder/app.js",
-        "use": "@vercel/node"
-      },
-      {
-        "src": "replayer/app.js",
-        "use": "@vercel/node"
-      },
-      {
-        "src": "server/app.js",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/recorder",
-        "dest": "/recorder/app.js"
-      },
-      {
-        "src": "/replayer",
-        "dest": "/replayer/app.js"
-      },
-      {
-        "src": "/server",
-        "dest": "/server/app.js"
-      }
-    ]
-  }
-  
+  "version": 2,
+  "builds": [
+    {
+      "src": "server/app.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/server/app.js"
+    }
+  ]
+}
