@@ -1,19 +1,15 @@
 {
-  "name": "sreverside",
+  "name": "crony-socket-io-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "path": "^0.12.7",
-    "rrweb": "^2.0.0-alpha.4"
+    "socket.io": "^4.4.1"
   }
 }

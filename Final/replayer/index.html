@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -12,12 +13,18 @@
       href="https://cdn.jsdelivr.net/npm/rrweb@latest/dist/rrweb.min.css"
     />
     <script src="https://cdn.jsdelivr.net/npm/rrweb@latest/dist/rrweb-all.min.js"></script>
+
+    <script
+      src="https://cdn.socket.io/4.4.1/socket.io.min.js"
+      integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
+      crossorigin="anonymous"
+    ></script>
+
   </head>
   <body>
     <div id="root">
       <h1>Live replay</h1>
-      <button id="replayButton">Replay</button>
     </div>
-    <script src="./replayer.js"></script>
+    <script src="./app.js"></script>
   </body>
 </html>
