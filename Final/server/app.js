@@ -1,7 +1,10 @@
-const { Server } = require("socket.io");
-const { createServer } = require("http");
+const express = require('express');
+const { Server } = require('socket.io');
+const { createServer } = require('http');
+const cors = require('cors');
 
-const httpServer = createServer();
+const app = express();
+const httpServer = createServer(app);
 
 const allowedOrigins = [
   "https://cloud-express-8tvj.vercel.app",
@@ -9,18 +12,23 @@ const allowedOrigins = [
   // Add other allowed origins here if needed
 ];
 
-const io = new Server(httpServer, {
-  cors: {
-    origin: (origin, callback) => {
-      if (allowedOrigins.includes(origin) || !origin) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: ["GET", "POST"],
-    credentials: true // Allow credentials if necessary
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
   },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
+const io = new Server(httpServer, {
+  cors: corsOptions,
 });
 
 io.on("connection", (socket) => {
