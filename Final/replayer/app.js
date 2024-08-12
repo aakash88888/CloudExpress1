@@ -29,9 +29,14 @@ async function fetchReplayData(interval) {
 
 // Fetch max interval value from the backend
 async function fetchMaxInterval() {
-  const response = await fetch(`${serverURL}/api/max-interval`);
-  const data = await response.json();
-  return data.maxInterval;
+  try {
+    const response = await fetch(`${serverURL}/api/max-interval`);
+    const data = await response.json();
+    maxInterval = data.maxInterval;
+    console.log('Session ID:', sessionID);
+  } catch (error) {
+    console.error('Error fetching session ID:', error);
+  }
 }
 
 
@@ -131,7 +136,7 @@ submitButton.addEventListener('click', async () => {
 
 // Initialize the page
 (async () => {
-  maxInterval = await fetchMaxInterval();
+  await fetchMaxInterval();
   instructionText.textContent = `Enter the interval number to play: `;
   fetchFolderList();
 })();
