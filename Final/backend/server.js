@@ -57,7 +57,7 @@ app.post('/api/record', (req, res) => {
       } else {
         intervalNum = parseInt(fs.readFileSync(intervalCounterPath, 'utf8'));
       }
-      
+
       folderName = `${eventsFolder}/interval_${parseInt(sessionId)}`
       currentFolder = folderName
 
@@ -81,14 +81,14 @@ app.post('/api/record', (req, res) => {
     await createFolder();
 
     const isValid = validateEvent(eventData);
-    if(isValid){
+    if (isValid) {
       fs.writeFile(`${currentFolder}/${eventData.timestamp}.json`, JSON.stringify(eventData), (err) => {
         if (err) {
           console.error('Error saving event:', err);
           res.sendStatus(500); // Internal server error
           return;
         }
-    
+
         console.log(eventData)
         console.log(`Event saved to file: ${eventData.timestamp}.json`);
       });
@@ -101,7 +101,7 @@ app.post('/api/record', (req, res) => {
     //       res.sendStatus(500); // Internal server error
     //       return;
     //     }
-    
+
     //     console.log(eventData)
     //     console.log(`Event saved to file: ${event.event.timestamp}.json`);
     //   });
@@ -150,6 +150,7 @@ app.post('/api/record', (req, res) => {
 //       });
 //   });
 // });
+
 
 
 //--------------------------Get method with Json file validations----------------------------
@@ -204,6 +205,7 @@ app.get('/api/replay/:interval', (req, res) => {
 });
 
 
+//Get counter value
 app.get('/api/max-interval', (req, res) => {
   const filePath = path.join(__dirname, 'interval_cnt.txt');
 
@@ -226,6 +228,7 @@ app.get('/api/max-interval', (req, res) => {
 
 
 
+//Get subfolder names
 const recordDataPath = path.join(__dirname, 'record_data');
 app.get('/api/record-data-folders', (req, res) => {
   try {
@@ -253,10 +256,28 @@ app.delete('/api/delete-folder/:folderName', (req, res) => {
     res.sendStatus(204); // No content
   } catch (err) {
     console.error('Error deleting folder:', err);
-    res.status(500).send('Error deleting folder');
+    res.status(400).send('Error updating counter');
   }
 });
 
+
+//To update the counter in text file
+app.post('/update-counter', (req, res) => {
+  let increment = req.body['counterValue']; // Expecting { "increment": number } in the request body
+  increment = parseInt(increment)
+
+  if (typeof increment !== 'number') {
+    return res.status(400).json({ error: 'Invalid input' });
+  }
+
+  try {
+    fs.writeFileSync("interval_cnt.txt", increment.toString());
+    res.json({ increment });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error deleting folder');
+  }
+});
 
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 

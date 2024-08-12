@@ -7,7 +7,6 @@ playerContainer.style.margin = '0 auto';
 // playerContainer.style.position = 'absolute';
 playerContainer.style.alignContent = "center"
 playerContainer.style.textAlign = "center"
-// playerContainer.style.transform = 'translate(-50%, -50%)';
 
 const instructionText = document.getElementById('instruction-text');
 const intervalInput = document.getElementById('interval-input');
@@ -17,9 +16,9 @@ const submitButton = document.getElementById('submit-button');
 let maxInterval;
 
 // const serverURL = 'https://cloudexpress-5znb.onrender.com'
-// const serverURL = `http://localhost:${PORT}`
+const serverURL = `http://localhost:${PORT}`
 
-const serverURL = 'https://backendfinal-freq.onrender.com'   //Final backend
+// const serverURL = 'https://backendfinal-freq.onrender.com'   //Final backend
   
 async function fetchReplayData(interval) {
   const response = await fetch(`${serverURL}/api/replay/${interval}`);
@@ -33,7 +32,7 @@ async function fetchMaxInterval() {
     const response = await fetch(`${serverURL}/api/max-interval`);
     const data = await response.json();
     maxInterval = data.maxInterval;
-    console.log('Session ID:', sessionID);
+    console.log('Max Interval:', maxInterval);
   } catch (error) {
     console.error('Error fetching session ID:', error);
   }
@@ -130,6 +129,30 @@ submitButton.addEventListener('click', async () => {
       });
   }
 
+});
+
+const update_btn = document.getElementById('update-counter')
+update_btn.textContent = "Update Counter"
+
+update_btn.addEventListener('click', ()=>{
+  const counterValue = prompt("Enter the value of the counter:");
+  console.log("Entered counter value:", counterValue);
+
+  const body = JSON.stringify({counterValue})
+
+  fetch(`${serverURL}/update-counter`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: body,
+  })
+  .then(response => {
+    console.log('Counter Updated successfully');
+  })
+  .catch(error => {
+    console.error('Error updating counter:', error);
+  });
 });
 
 
