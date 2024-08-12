@@ -26,8 +26,11 @@ const validateEvent = ajv.compile(eventSchema);
 
 let interval_num = 1
 
-app.use(cors({ origin: '*' }))
-app.use(cors({ origin: 'https://player-clla.onrender.com'}))
+// app.use(cors({ origin: '*' }))
+app.use(cors({
+  origin: ['https://cloudexpress12.pages.dev', 'https://cloudexpress16.pages.dev/'] // Replace with your allowed origins
+}));
+
 // app.use(bodyParser.json());
 
 app.use(bodyParser.json({ limit: '50mb' })); // Adjust limit as needed
