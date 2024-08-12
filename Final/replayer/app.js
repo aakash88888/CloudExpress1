@@ -19,7 +19,9 @@ const submitButton = document.getElementById('submit-button');
 let maxInterval;
 
 // const serverURL = 'https://cloudexpress-5znb.onrender.com'
-const serverURL = `http://localhost:${PORT}`
+// const serverURL = `http://localhost:${PORT}`
+
+const serverURL = 'https://backendfinal-freq.onrender.com'   //Final backend
   
 async function fetchReplayData(interval) {
   const response = await fetch(`${serverURL}/api/replay/${interval}`);
