@@ -1,30 +1,42 @@
 <!DOCTYPE html>
-
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Fusion Analytics Test Website" />
-    <title>RRWEB replayer</title>
 
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/rrweb@latest/dist/rrweb.min.css"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/rrweb@latest/dist/rrweb-all.min.js"></script>
+<head>
 
-    <script
-      src="https://cdn.socket.io/4.4.1/socket.io.min.js"
-      integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
-      crossorigin="anonymous"
-    ></script>
+  <meta charset="utf-8" />
 
-  </head>
-  <body>
-    <div id="root">
-      <h1>Live replay</h1>
-    </div>
-    <script src="./app.js"></script>
-  </body>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="theme-color" content="#000000" />
+
+  <meta name="description" content="Fusion Analytics Test Website" />
+  <title>RRWEB replayer</title>
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rrweb-player@latest/dist/style.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/rrweb-player@latest/dist/index.js"></script>
+
+  <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"
+    integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="root">
+    <h1>Player</h1>
+  </div>
+  <p style="font-size: 20px;">Recorded data</p>
+  <ul id="folderList"></ul>
+  <div id="input-container">
+    <p id="instruction-text"></p>
+    <input type="number" id="interval-input" placeholder="Enter interval" />
+    <p id="error-message" style="color:red;"></p>
+    <button id="submit-button">Submit</button>
+  </div>
+  <div id="player-container"></div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+
 </html>

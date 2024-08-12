@@ -1,0 +1,24 @@
+Type,Description
+0,Full Snapshot: A complete representation of the DOM at a specific point in time.
+1,"Mutation: Changes to the DOM structure, such as adding, removing, or modifying elements."
+2,Style: Changes to the styles of elements.
+3,Incremental Snapshot: A partial snapshot capturing only the changes since the last full or incremental snapshot.
+4,"Meta: Additional information about the recording session, such as start/end, page load/unload, or custom data."
+5,Mouse Move: Mouse movement events.
+6,Mouse Down: Mouse button press events.
+7,Mouse Up: Mouse button release events.
+8,Click: Mouse click events.
+9,DblClick: Double-click events.
+10,Mouse Over: Mouse hover events.
+11,Mouse Out: Mouse leave events.
+12,Wheel: Mouse wheel events.
+13,Key Down: Keyboard key press events.
+14,Key Up: Keyboard key release events.
+15,Input: Input events on form elements.
+16,Touch Start: Touch events (start).
+17,Touch Move: Touch events (move).
+18,Touch End: Touch events (end).
+19,Focus: Focus events on elements.
+20,Blur: Blur events on elements.
+21,Scroll: Scroll events on the window or scrollable elements.
+22,Resize: Window resize events.
