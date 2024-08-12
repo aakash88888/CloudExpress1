@@ -1,5 +1,3 @@
-var socket = io("https://backend-1wo2.onrender.com");
-
 var firstEvent = null;
 var roomName = "SqFR5uoLEUX8Qzuo66xF686qxf23";
 const PORT = 3001
