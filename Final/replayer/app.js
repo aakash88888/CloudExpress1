@@ -18,8 +18,8 @@ const submitButton = document.getElementById('submit-button');
 
 let maxInterval;
 
-const serverURL = 'https://cloudexpress-5znb.onrender.com'
-// const serverURL = 'http://localhost:${PORT}'
+// const serverURL = 'https://cloudexpress-5znb.onrender.com'
+const serverURL = `http://localhost:${PORT}`
   
 async function fetchReplayData(interval) {
   const response = await fetch(`${serverURL}/api/replay/${interval}`);
@@ -132,6 +132,6 @@ submitButton.addEventListener('click', async () => {
 // Initialize the page
 (async () => {
   maxInterval = await fetchMaxInterval();
-  instructionText.textContent = `Enter the interval number from 1 to ${maxInterval - 1} to play!`;
+  instructionText.textContent = `Enter the interval number to play: `;
   fetchFolderList();
 })();

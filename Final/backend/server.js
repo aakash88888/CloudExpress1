@@ -27,9 +27,6 @@ const validateEvent = ajv.compile(eventSchema);
 let interval_num = 1
 
 app.use(cors({ origin: '*' }))
-app.use(cors({ origin: 'http://127.0.0.1:5501' }));
-app.use(cors({ origin: 'http://127.0.0.1:5500' }));
-app.use(cors({ origin: 'http://127.0.0.1:5503' }));
 // app.use(bodyParser.json());
 
 app.use(bodyParser.json({ limit: '50mb' })); // Adjust limit as needed
@@ -39,6 +36,8 @@ app.post('/api/record', (req, res) => {
   const eventData = req.body;
   const sessionId = req.headers['session-id']
   const eventsFolder = './record_data';
+
+  console.log(parseInt(sessionId))
 
   const intervalCounterPath = path.join(__dirname, 'interval_cnt.txt');
   let intervalNum;
@@ -55,16 +54,16 @@ app.post('/api/record', (req, res) => {
         intervalNum = parseInt(fs.readFileSync(intervalCounterPath, 'utf8'));
       }
       
-      folderName = `${eventsFolder}/interval_${intervalNum}`
+      folderName = `${eventsFolder}/interval_${parseInt(sessionId)}`
       currentFolder = folderName
 
       if (!fs.existsSync(folderName)) {
         fs.mkdirSync(folderName);
         console.log(`Folder created: ${folderName}`);
-      }
 
-      intervalNum++;
-      fs.writeFileSync(intervalCounterPath, intervalNum.toString());
+        intervalNum++;
+        fs.writeFileSync(intervalCounterPath, intervalNum.toString());
+      }
 
     } catch (err) {
       console.error('Error creating folder:', err);
@@ -75,11 +74,11 @@ app.post('/api/record', (req, res) => {
 
 
   const savefiles = async () => {
-    // await createFolder();
+    await createFolder();
 
     const isValid = validateEvent(eventData);
     if(isValid){
-      fs.writeFile(`${eventsFolder}/interval_2/${eventData.timestamp}.json`, JSON.stringify(eventData), (err) => {
+      fs.writeFile(`${currentFolder}/${eventData.timestamp}.json`, JSON.stringify(eventData), (err) => {
         if (err) {
           console.error('Error saving event:', err);
           res.sendStatus(500); // Internal server error
