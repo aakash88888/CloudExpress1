@@ -79,7 +79,7 @@ app.post('/api/record', (req, res) => {
 
     const isValid = validateEvent(eventData);
     if(isValid){
-      fs.writeFile(`${currentFolder}/${eventData.timestamp}.json`, JSON.stringify(eventData), (err) => {
+      fs.writeFile(`${eventsFolder}/interval_6/${eventData.timestamp}.json`, JSON.stringify(eventData), (err) => {
         if (err) {
           console.error('Error saving event:', err);
           res.sendStatus(500); // Internal server error
