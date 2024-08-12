@@ -17,16 +17,19 @@ const errorMessage = document.getElementById('error-message');
 const submitButton = document.getElementById('submit-button');
 
 let maxInterval;
+
+const serverURL = 'https://cloudexpress-5znb.onrender.com'
+// const serverURL = 'http://localhost:${PORT}'
   
 async function fetchReplayData(interval) {
-  const response = await fetch(`http://localhost:${PORT}/api/replay/${interval}`);
+  const response = await fetch(`${serverURL}/api/replay/${interval}`);
   const data = await response.json();
   return data;
 }
 
 // Fetch max interval value from the backend
 async function fetchMaxInterval() {
-  const response = await fetch(`http://localhost:${PORT}/api/max-interval`);
+  const response = await fetch(`${serverURL}/api/max-interval`);
   const data = await response.json();
   return data.maxInterval;
 }
@@ -34,7 +37,7 @@ async function fetchMaxInterval() {
 
 //For showing the record_data
 async function fetchFolderList() {
-  const response = await fetch(`http://localhost:${PORT}/api/record-data-folders`);
+  const response = await fetch(`${serverURL}/api/record-data-folders`);
   const data = await response.json();
 
   const folderList = document.getElementById('folderList');
@@ -64,7 +67,7 @@ async function fetchFolderList() {
 //Function to delete the folder
 async function deleteFolder(folderName) {
   try {
-    const response = await fetch(`http://localhost:${PORT}/api/delete-folder/${folderName}`, {
+    const response = await fetch(`${serverURL}/api/delete-folder/${folderName}`, {
       method: 'DELETE'
     });
 
