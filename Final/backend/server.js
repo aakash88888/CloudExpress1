@@ -27,9 +27,7 @@ const validateEvent = ajv.compile(eventSchema);
 let interval_num = 1
 
 app.use(cors({ origin: '*' }))
-app.use(cors({ origin: 'http://127.0.0.1:5501' }));
-app.use(cors({ origin: 'http://127.0.0.1:5500' }));
-app.use(cors({ origin: 'http://127.0.0.1:5503' }));
+
 // app.use(bodyParser.json());
 
 app.use(bodyParser.json({ limit: '50mb' })); // Adjust limit as needed
