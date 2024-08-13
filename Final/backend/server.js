@@ -1,10 +1,12 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const archiver = require('archiver');
 const bodyParser = require('body-parser');
 const path = require('path')
 const fs = require('fs');
 const Ajv = require('ajv');
+const { count } = require('console');
 
 const ajv = new Ajv();
 
@@ -35,18 +37,17 @@ app.use(cors({
 
 app.use(bodyParser.json({ limit: '50mb' })); // Adjust limit as needed
 
+
 //For sending events data to server
 app.post('/api/record', (req, res) => {
   const eventData = req.body;
-  const sessionId = req.headers['session-id']
+  // const sessionId = req.headers['session-id']
   const eventsFolder = './record_data';
 
-  console.log(parseInt(sessionId))
-
   const intervalCounterPath = path.join(__dirname, 'interval_cnt.txt');
-  let intervalNum;
   let currentFolder;
-  const createFolder = async (folderName) => {
+
+  const createFolder = async () => {
     try {
 
       if (!fs.existsSync(intervalCounterPath)) {
@@ -58,15 +59,16 @@ app.post('/api/record', (req, res) => {
         intervalNum = parseInt(fs.readFileSync(intervalCounterPath, 'utf8'));
       }
 
-      folderName = `${eventsFolder}/interval_${parseInt(sessionId)}`
-      currentFolder = folderName
+    currentFolder = `${eventsFolder}/interval_${intervalNum}`
+    
+      if (!fs.existsSync(currentFolder)) {
+        fs.mkdirSync(currentFolder);
+        console.log(`Folder created: ${currentFolder}`);
 
-      if (!fs.existsSync(folderName)) {
-        fs.mkdirSync(folderName);
-        console.log(`Folder created: ${folderName}`);
-
-        intervalNum++;
-        fs.writeFileSync(intervalCounterPath, intervalNum.toString());
+        // var counter = parseInt(sessionId);
+        var counter = intervalNum;
+        counter = counter + 1;
+        fs.writeFileSync(intervalCounterPath, counter.toString());
       }
 
     } catch (err) {
@@ -80,32 +82,22 @@ app.post('/api/record', (req, res) => {
   const savefiles = async () => {
     await createFolder();
 
-    const isValid = validateEvent(eventData);
-    if (isValid) {
-      fs.writeFile(`${currentFolder}/${eventData.timestamp}.json`, JSON.stringify(eventData), (err) => {
-        if (err) {
-          console.error('Error saving event:', err);
-          res.sendStatus(500); // Internal server error
-          return;
-        }
+    eventData.forEach(event => {
+      const isValid = validateEvent(event);
+      if (isValid) {
+        const jsonString = JSON.stringify(event, null, 2);
+        fs.writeFile(`${currentFolder}/${event.timestamp}.json`, jsonString, (err) => {
+          if (err) {
+            console.error('Error saving event:', err);
+            res.sendStatus(500); // Internal server error
+            return;
+          }
 
-        console.log(eventData)
-        console.log(`Event saved to file: ${eventData.timestamp}.json`);
-      });
-    }
-
-    // eventData.forEach(event => {
-    //   fs.writeFile(`${currentFolder}/${event.event.timestamp}.json`, JSON.stringify(event.event), (err) => {
-    //     if (err) {
-    //       console.error('Error saving event:', err);
-    //       res.sendStatus(500); // Internal server error
-    //       return;
-    //     }
-
-    //     console.log(eventData)
-    //     console.log(`Event saved to file: ${event.event.timestamp}.json`);
-    //   });
-    // });
+          console.log(event)
+          console.log(`Event saved to file: ${event.timestamp}.json`);
+        });
+      }
+    });
 
     res.sendStatus(201); // Created
   }
@@ -168,14 +160,17 @@ app.get('/api/replay/:interval', (req, res) => {
 
     const filePromises = files.map(file => {
       const filePath = path.join(intervalPath, file);
+
       return new Promise((resolve, reject) => {
         fs.stat(filePath, (err, stats) => {
+
           if (err) {
             reject(err);
           } else if (stats.size === 0) {
             console.warn(`Skipping empty file: ${filePath}`);
             resolve(null);
           } else {
+
             fs.readFile(filePath, 'utf8', (err, data) => {
               if (err) {
                 reject(err);
@@ -203,6 +198,7 @@ app.get('/api/replay/:interval', (req, res) => {
       });
   });
 });
+
 
 
 //Get counter value
@@ -278,6 +274,35 @@ app.post('/update-counter', (req, res) => {
     res.status(500).send('Error deleting folder');
   }
 });
+
+
+app.get('/download/record-data', (req, res) => {
+  const directory = './record_data';
+
+  const output = fs.createWriteStream('Recorded_Data.zip');
+  const archive = archiver('zip', {
+    zlib: { level: 9 } // Sets the compression level
+  });
+
+  output.on('close', () => {
+    console.log('Archive finished.');
+  });
+
+  archive.on('error', (err) => {
+    console.error('Archiver error:', err);
+    res.status(500).send('Error creating zip file');
+  });
+
+  archive.pipe(output);
+
+  archive.directory(directory, false); // Add directory to zip
+
+  archive.finalize();
+
+  // Once the archive has been finalized, send it to the client
+  res.download('Recorded_Data.zip');
+});
+
 
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 
